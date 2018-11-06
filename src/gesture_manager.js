@@ -13,6 +13,7 @@ class GestureManager
     document.addEventListener("touchstart", this.onTouchStart.bind(this), false);
     document.addEventListener("touchend", this.onTouchEnd.bind(this), false);
   }
+
   onTouchStart(
     e/*event*/){
     this.touches = e.touches;
@@ -20,6 +21,7 @@ class GestureManager
     this.startY = this.touches[0].clientY;
     console.log("Touch Detected at Position(" + this.touches[0].clientX + ' , ' + this.touches[0].clientY + ")");
   }
+
   onTouchEnd(
     e/*event*/){
     this.currentTime = new Date().getTime();
