@@ -1,28 +1,19 @@
-class Game
-{
-  constructor()
-  {
-    this.gesture = new GestureManager()
-
+class Game{
+  constructor(){
+    this.gesture = new GestureManager();
   }
-
-  initWorld()
-  {
+  initWorld(){
     console.log("Initialising Game World");
-    this.gesture.init()
+    this.gesture.init();
 		this.update = this.update.bind(this);
   }
-
-  update()
-  {
+  update(){
     window.requestAnimationFrame(gameNs.game.update);
-    this.render()
+    this.render();
   }
-
-  render()
-  {
+  render(){
     var canvas = document.getElementById("mycanvas");
-    var ctx = canvas.getContext("2d")
-    ctx.clearRect(0,0,canvas.width,canvas.height)
+    var ctx = canvas.getContext("2d");
+    ctx.clearRect(0,0,canvas.width,canvas.height);
   }
 }

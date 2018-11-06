@@ -2,26 +2,18 @@
 
  /**
   * @author James Condon
-	* @studentId
+	* @studentId c00207200
+	* Gesture Manager
 	*/
-
-
-
-
 var gameNs = {};
 
-function main()
-{
+function main(){
 	initCanvas();
-
-	var game = new Game()
+	var game = new Game();
 	gameNs.game = game;
-	game.initWorld()
-	game.update()
-
+	game.initWorld();
+	game.update();
 }
-
-
 /**
  * Initialises the canvas - the drawing surface. The canvas
  * is added to the document. When a HTML document is loaded into a
@@ -29,8 +21,7 @@ function main()
  * the root node of the HTML document and is considered the 'owner' of all other
  * nodes such as forms, buttons, the canvas etc.
  */
-function initCanvas()
-{
+function initCanvas(){
 	// Use the document object to create a new element canvas.
 	var canvas = document.createElement("canvas");
 	// Assign the canvas an id so we can reference it elsewhere.
