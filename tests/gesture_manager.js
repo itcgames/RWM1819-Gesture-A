@@ -7,6 +7,10 @@ describe('gesture_manager()', function () {
     expect(constructor).to.be.a('function');
 
   });
+  it('exists', function () {
+    expect(doubleTap).to.be.a('function');
+
+  });
 
   it('does something', function () {
     expect(true).to.equal(false);

@@ -9,6 +9,10 @@ class Game{
   }
   update(){
     window.requestAnimationFrame(gameNs.game.update);
+    if (this.gesture.getOnePointDetection()) {
+      this.gesture.pointDetection();}
+    if (this.gesture.getDoubleTouchDetection()) {
+      this.gesture.doubleTap();}
     this.render();
   }
   render(){
