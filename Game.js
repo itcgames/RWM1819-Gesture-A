@@ -13,6 +13,9 @@ class Game{
       this.gesture.pointDetection();}
     if (this.gesture.getDoubleTouchDetection()) {
       this.gesture.doubleTap();}
+    if (this.gesture.getSwipe()){
+      console.log('swipe Detected in direction ' + this.gesture.getDirection())
+    }
     this.render();
   }
   render(){
