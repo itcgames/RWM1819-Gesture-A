@@ -3,22 +3,32 @@
 describe('gesture_manager()', function () {
   'use strict';
 
-  it('exists', function () {
-    expect(constructor).to.be.a('function');
 
-  });
-  it('exists', function () {
-    expect(doubleTap).to.be.a('function');
-
-  });
-
-  it('does something', function () {
-    expect(true).to.equal(false);
+  it('Checks for One Touch detection', function () {
+    var gestureManager = new GestureManager(true)
+    expect(gestureManager.getOnePointDetection()).to.equal(false)
+    gestureManager.startX = 100
+    gestureManager.startY = 100
+    gestureManager.oneTouch = true
+    expect(gestureManager.getOnePointDetection()).to.equal(true)
   });
 
-  it('does something else', function () {
-    expect(true).to.equal(false);
+  it('Checks for Double Touch detection', function () {
+    var gestureManager = new GestureManager(true)
+    expect(gestureManager.getDoubleTouchDetection()).to.equal(false)
+    gestureManager.doubleTouch = true
+    expect(gestureManager.getDoubleTouchDetection()).to.equal(true)
   });
 
-  // Add more assertions here
+  it('Checks for Swipe detection', function () {
+    var gestureManager = new GestureManager(true)
+    expect(gestureManager.getSwipe()).to.equal(false)
+    gestureManager.swipeDetected = true
+    gestureManager.direction = "left"
+    expect(gestureManager.getSwipe()).to.equal(true)
+    expect(gestureManager.getDirection()).to.equal("left")
+  });
+
+
+
 });
