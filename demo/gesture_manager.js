@@ -1,12 +1,8 @@
 class GestureManager
 {
   constructor(){
-    this.startX = null;
-    this.startY = null;
     this.xDown = null;
     this.yDown = null;
-    this.xUp = null;
-    this.yUp = null;
     this.timeout = null;
     this.timeOne = null;
     this.lastTap = 0;
@@ -17,31 +13,35 @@ class GestureManager
     this.direction = null;
   }
   init(){
-    document.addEventListener("touchstart", this.onTouchStart.bind(this), false);
-    document.addEventListener("touchend", this.onTouchEnd.bind(this), false);
-    document.addEventListener("touchmove", this.onTouchMove.bind(this), false);
+    document.addEventListener("touchstart", this.onTouchStart.bind(this), {passive:false});
+    document.addEventListener("touchend", this.onTouchEnd.bind(this), {passive:false});
+    document.addEventListener("touchmove", this.onTouchMove.bind(this), {passive:false});
   }
 
   onTouchStart(e){
+    e.preventDefault();
     this.touches = e.touches
-    this.startX = this.touches[0].clientX
-    this.startY = this.touches[0].clientY
 
-    this.xDown =  this.touches[0].clientX
-    this.yDown =  this.touches[0].clientY
+    var startX = this.touches[0].clientX
+    var startY = this.touches[0].clientY
 
     this.timeOne = new Date().getTime();
     this.oneTouch = true;
+
+    this.xDown =  startX
+    this.yDown =  startY
+
   }
 
   onTouchMove(e){
+    e.preventDefault();
     this.touches = e.touches
 
-    this.xUp = this.touches[0].clientX
-    this.yUp = this.touches[0].clientY
+    var xUp = this.touches[0].clientX
+    var yUp = this.touches[0].clientY
 
-    var xDiff = this.xDown - this.xUp;
-    var yDiff = this.yDown - this.yUp;
+    var xDiff = this.xDown - xUp;
+    var yDiff = this.yDown - yUp;
 
     if (Math.abs(xDiff) > Math.abs(yDiff)) {
       if (xDiff > 0) {
@@ -66,7 +66,8 @@ class GestureManager
   }
 
   onTouchEnd(e){
-    this.swipeDetected = false
+    e.preventDefault();
+    //sets the time
     var currentTime = new Date().getTime();
     var tapLength = currentTime - this.lastTap;
     clearTimeout(this.timeout);
@@ -74,16 +75,13 @@ class GestureManager
         this.doubleTouch = true;
     }
     this.lastTap = currentTime;
-  }
 
-  doubleTap(){
-    console.log("Double Tap")
-    this.doubleTouch = false;
-  }
+    this.swipeDetected = false
 
-  pointDetection(){
-    console.log("Touch Detected at Position(" + this.startX + ' , ' + this.startY + ")")
+  }
+  resetDetection(){
     this.oneTouch = false;
+    this.doubleTouch = false;
   }
 
   getOnePointDetection(){

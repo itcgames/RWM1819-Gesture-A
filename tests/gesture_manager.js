@@ -7,8 +7,6 @@ describe('gesture_manager()', function () {
   it('Checks for One Touch detection', function () {
     var gestureManager = new GestureManager(true)
     expect(gestureManager.getOnePointDetection()).to.equal(false)
-    gestureManager.startX = 100
-    gestureManager.startY = 100
     gestureManager.oneTouch = true
     expect(gestureManager.getOnePointDetection()).to.equal(true)
   });
@@ -20,7 +18,7 @@ describe('gesture_manager()', function () {
     expect(gestureManager.getDoubleTouchDetection()).to.equal(true)
   });
 
-  it('Checks for Swipe detection', function () {
+  it('Checks Swipe in Left Direction', function () {
     var gestureManager = new GestureManager(true)
     expect(gestureManager.getSwipe()).to.equal(false)
     gestureManager.swipeDetected = true
