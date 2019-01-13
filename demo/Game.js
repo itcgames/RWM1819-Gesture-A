@@ -11,6 +11,7 @@ class Game{
     window.requestAnimationFrame(gameNs.game.update);
     if (this.gesture.getOnePointDetection()) {
       console.log("Touch Detected");
+      //this.gesture.checkHold();
       this.gesture.resetDetection();
       }
     if (this.gesture.getDoubleTouchDetection()) {
@@ -20,6 +21,9 @@ class Game{
     if (this.gesture.getSwipe()){
       console.log('swipe Detected in direction ' + this.gesture.getDirection())
     }
+    if (this.gesture.getOnePointDetection()) {
+      this.gesture.checkHold();
+      }
     this.render();
   }
   render(){

@@ -5,14 +5,18 @@ class GestureManager
     this.yDown = null;
     this.timeout = null;
     this.timeOne = null;
+    this.hold = false
     this.lastTap = 0;
     this.timeout = null;
     this.doubleTouch = false;
     this.oneTouch = false;
     this.swipeDetected = false;
     this.direction = null;
+    this.secondCount = 0;
+    this.secHolder = 0
   }
   init(){
+    gameNs.prevTime = Date.now()
     document.addEventListener("touchstart", this.onTouchStart.bind(this), {passive:false});
     document.addEventListener("touchend", this.onTouchEnd.bind(this), {passive:false});
     document.addEventListener("touchmove", this.onTouchMove.bind(this), {passive:false});
@@ -27,6 +31,7 @@ class GestureManager
 
     this.timeOne = new Date().getTime();
     this.oneTouch = true;
+
 
     this.xDown =  startX
     this.yDown =  startY
@@ -75,13 +80,48 @@ class GestureManager
         this.doubleTouch = true;
     }
     this.lastTap = currentTime;
-
+    this.hold = false;
+    this.secondCount = 0
+    this.oneTouch = false;
     this.swipeDetected = false
+    //this.secHolder = 0
+  }
+  checkHold(){
+    //starts the timer
+    this.timer()
+    //checks if the holder while not holding
+    if (this.secHolder >= 1 && this.hold === false){
+      //sets the holder to true
+      this.hold = true
+    }
+    //checks if hold is true
+    if (this.hold === true){
+      //outputs the length of time holding
+      console.log("Holding for " + this.secHolder)
+    }
 
   }
+
+
+
+  timer(){
+     //This sets the time for the seconds based upon the update speed
+     this.secondCount = this.secondCount + 1;
+     this.secHolder = Math.trunc(this.secondCount/60) //A variable thats assigned the seconds to calculate the minutes
+
+   }
+
+   getHolding(){
+     return this.hold;
+   }
+   getSeconds() {
+     return this.secHolder
+   }
+
   resetDetection(){
     this.oneTouch = false;
     this.doubleTouch = false;
+    //this.hold = false
   }
 
   getOnePointDetection(){

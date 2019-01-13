@@ -11,6 +11,7 @@ function main(){
 	initCanvas();
 	var game = new Game();
 	gameNs.game = game;
+//	gameNs.previousTime = new Date.now();
 	game.initWorld();
 	game.update();
 }

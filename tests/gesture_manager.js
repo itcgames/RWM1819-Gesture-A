@@ -27,6 +27,15 @@ describe('gesture_manager()', function () {
     expect(gestureManager.getDirection()).to.equal("left")
   });
 
+  it('Checks if user is holding screen', function (){
+    var gestureManager = new GestureManager(true)
+    expect(gestureManager.getHolding()).to.equal(false)
+    gestureManager.hold = true
+    gestureManager.secHolder = 1
+    expect(gestureManager.getHolding()).to.equal(true)
+    expect(gestureManager.getSeconds()).to.equal(1)
+  });
+
 
 
 });
