@@ -36,6 +36,16 @@ describe('gesture_manager()', function () {
     expect(gestureManager.getSeconds()).to.equal(1)
   });
 
+  it('Checks if user is dragging item', function (){
+    var gestureManager = new GestureManager(true)
+    var rect = new Rectangle(100,100,300,300)
+    expect(gestureManager.checkCollision(rect)).to.equal(false);
+    gestureManager.shapePosX = 100;
+    gestureManager.shapePosY = 100;
+    expect(gestureManager.checkCollision(rect)).to.equal(true);
+
+  });
+
 
 
 });

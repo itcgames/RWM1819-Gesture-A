@@ -13,7 +13,9 @@ class GestureManager
     this.swipeDetected = false;
     this.direction = null;
     this.secondCount = 0;
-    this.secHolder = 0
+    this.secHolder = 0;
+    this.shapePosX = 0
+    this.shapePosY = 0
   }
   init(){
     gameNs.prevTime = Date.now()
@@ -26,15 +28,15 @@ class GestureManager
     e.preventDefault();
     this.touches = e.touches
 
-    var startX = this.touches[0].clientX
-    var startY = this.touches[0].clientY
+    this.startX = this.touches[0].clientX
+    this.startY = this.touches[0].clientY
 
     this.timeOne = new Date().getTime();
     this.oneTouch = true;
 
 
-    this.xDown =  startX
-    this.yDown =  startY
+    this.xDown =  this.startX
+    this.yDown =  this.startY
 
   }
 
@@ -50,24 +52,24 @@ class GestureManager
 
     if (Math.abs(xDiff) > Math.abs(yDiff)) {
       if (xDiff > 0) {
-        this.direction = 'left'
-        this.swipeDetected = true
+        this.setSwipe("left", true);
       }
       else {
-        this.direction = 'right'
-        this.swipeDetected = true
+        this.setSwipe("right", true);
       }
     }
     else {
       if (yDiff > 0) {
-        this.direction = 'up'
-        this.swipeDetected = true
+        this.setSwipe("up", true);
       }
       else {
-        this.direction = 'down'
-        this.swipeDetected = true
+        this.setSwipe("down", true);
       }
     }
+
+    this.shapePosX = this.touches[0].clientX;
+    this.shapePosY = this.touches[0].clientY;
+
   }
 
   onTouchEnd(e){
@@ -75,15 +77,13 @@ class GestureManager
     //sets the time
     var currentTime = new Date().getTime();
     var tapLength = currentTime - this.lastTap;
-    clearTimeout(this.timeout);
     if(tapLength < 200 && tapLength > 0){
         this.doubleTouch = true;
     }
     this.lastTap = currentTime;
-    this.hold = false;
-    this.secondCount = 0
     this.oneTouch = false;
-    this.swipeDetected = false
+    this.resetHold(0,false);
+    this.setSwipe("none", false);
     //this.secHolder = 0
   }
   checkHold(){
@@ -109,6 +109,16 @@ class GestureManager
      this.secondCount = this.secondCount + 1;
      this.secHolder = Math.trunc(this.secondCount/60) //A variable thats assigned the seconds to calculate the minutes
 
+   }
+
+   resetHold(count, detect){
+     this.hold = detect;
+     this.secondCount = count;
+   }
+
+   setSwipe(dir, detect){
+     this.direction = dir;
+     this.swipeDetected = detect;
    }
 
    getHolding(){
@@ -137,4 +147,27 @@ class GestureManager
   getDoubleTouchDetection(){
     return this.doubleTouch;
   }
+  getX()
+  {
+    return this.shapePosX;
+  }
+  getY()
+  {
+    return this.shapePosY;
+  }
+
+  checkCollision(e)
+ 	{
+ 		var collides = false;
+
+ 		if ((this.shapePosX < e.x + e.width) &&
+ 				(this.shapePosX + 100 > e.x) &&
+ 				(this.shapePosY + 100 > e.y) &&
+ 				(this.shapePosY < e.y + e.height))
+ 		{
+ 			collides = true;
+ 		}
+ 		return collides;
+ 	}
+
 }
