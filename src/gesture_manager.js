@@ -1,6 +1,6 @@
 class GestureManager
 {
-  constructor(){
+  constructor() {
     this.xDown = null;
     this.yDown = null;
     this.timeout = null;
@@ -18,7 +18,7 @@ class GestureManager
     this.shapePosY = 0
   }
   init(){
-    gameNs.prevTime = Date.now()
+    this.prevTime = Date.now()
     document.addEventListener("touchstart", this.onTouchStart.bind(this), {passive:false});
     document.addEventListener("touchend", this.onTouchEnd.bind(this), {passive:false});
     document.addEventListener("touchmove", this.onTouchMove.bind(this), {passive:false});
@@ -27,17 +27,35 @@ class GestureManager
   onTouchStart(e){
     e.preventDefault();
     this.touches = e.touches
-
+    //main x and y touch positions
     this.startX = this.touches[0].clientX
     this.startY = this.touches[0].clientY
 
     this.timeOne = new Date().getTime();
     this.oneTouch = true;
 
-
     this.xDown =  this.startX
     this.yDown =  this.startY
 
+    switch (e.touches.length){
+      case 1: this.handle_one_touch(e); break;
+      case 2: this.handle_two_touch(e); break;
+      case 3: this.handle_three_touch(e); break;
+    }
+
+  }
+
+  handle_one_touch(e){
+    var touches = e.touches;
+    console.log(touches.length)
+  }
+  handle_two_touch(e){
+    var touches = e.touches;
+    console.log(touches.length)
+  }
+  handle_three_touch(e){
+    var touches = e.touches;
+    console.log(touches.length)
   }
 
   onTouchMove(e){
@@ -67,8 +85,8 @@ class GestureManager
       }
     }
 
-    this.shapePosX = this.touches[0].clientX;
-    this.shapePosY = this.touches[0].clientY;
+    this.shapePosX = xUp;
+    this.shapePosY = yUp;
 
   }
 
@@ -76,13 +94,15 @@ class GestureManager
     e.preventDefault();
     //sets the time
     var currentTime = new Date().getTime();
+    //sets the tap length to time between taps
     var tapLength = currentTime - this.lastTap;
+    //
     if(tapLength < 200 && tapLength > 0){
         this.doubleTouch = true;
     }
     this.lastTap = currentTime;
-    this.oneTouch = false;
-    this.resetHold(0,false);
+
+    this.setHolding(0,false);
     this.setSwipe("none", false);
     //this.secHolder = 0
   }
@@ -102,8 +122,6 @@ class GestureManager
 
   }
 
-
-
   timer(){
      //This sets the time for the seconds based upon the update speed
      this.secondCount = this.secondCount + 1;
@@ -111,9 +129,10 @@ class GestureManager
 
    }
 
-   resetHold(count, detect){
+   setHolding(count, detect){
      this.hold = detect;
      this.secondCount = count;
+     this.oneTouch = detect;
    }
 
    setSwipe(dir, detect){
@@ -121,37 +140,31 @@ class GestureManager
      this.swipeDetected = detect;
    }
 
-   getHolding(){
+   get holding(){
      return this.hold;
    }
-   getSeconds() {
+   get seconds() {
      return this.secHolder
    }
 
-  resetDetection(){
-    this.oneTouch = false;
-    this.doubleTouch = false;
-    //this.hold = false
-  }
-
-  getOnePointDetection(){
+  get detection(){
     return this.oneTouch;
   }
 
-  getSwipe(){
+  get swipe(){
     return this.swipeDetected;
   }
-  getDirection(){
+  get currentDir(){
     return this.direction;
   }
-  getDoubleTouchDetection(){
+  get doubleDetect(){
     return this.doubleTouch;
   }
-  getX()
+  get x()
   {
     return this.shapePosX;
   }
-  getY()
+  get y()
   {
     return this.shapePosY;
   }

@@ -11,20 +11,6 @@ class Game{
   }
   update(){
     window.requestAnimationFrame(gameNs.game.update);
-    if (this.gesture.checkCollision(this.rect))
-    {
-      this.rect.setPosition(this.gesture.getX(), this.gesture.getY());
-    }
-
-
-
-    if (this.gesture.getDoubleTouchDetection()) {
-      console.log("Double Tap")
-      this.gesture.resetDetection();
-      }
-    if (this.gesture.getSwipe()){
-      console.log('swipe Detected in direction ' + this.gesture.getDirection())
-    }
 
     this.render();
   }
