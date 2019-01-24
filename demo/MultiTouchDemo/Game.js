@@ -5,20 +5,41 @@ class Game{
     this.secondCount = 0;
     this.secHolder = 0;
     this.startTimer = false;
-    this.dir = "";
-    this.sec = "";
+    this.count = "";
   }
   initWorld(){
     console.log("Initialising Game World");
 
-    
+   
     this.gesture.init();
 		this.update = this.update.bind(this);
   }
   update(){
     window.requestAnimationFrame(gameNs.game.update);
   
-    
+    if (this.gesture.detection && !this.startTimer) {
+      if (this.gesture.totalTouches > 1){
+        this.text = "MultiTouch detected"
+      }
+      else {
+        this.text = "Touch detected"
+      }
+
+      this.startTimer = true;
+    }
+ 
+    if (this.startTimer){
+      this.timer();
+      
+     }
+     console.log(this.secHolder)
+     if (this.secHolder >= 1){
+       this.text = "Perform a Gesture";
+       this.secHolder = 0;
+       this.secondCount = 0;
+       this.startTimer = false;
+     }
+
     this.render();
   }
 
@@ -39,9 +60,9 @@ class Game{
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    ctx.font = '120px serif'; 
+    ctx.font = '90px serif'; 
     ctx.fillStyle = "000000"
-    ctx.fillText(this.dir + this.text + this.sec, 100,100);
+    ctx.fillText(this.text, 25,100);
       
     
   }

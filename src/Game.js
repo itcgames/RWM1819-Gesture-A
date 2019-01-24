@@ -1,7 +1,6 @@
 class Game{
   constructor(){
     this.gesture = new GestureManager();
-    console.log("hi")
     this.rect = new Rectangle(400,700,300,300)
     this.text = "Perform a Gesture"
    
@@ -10,6 +9,7 @@ class Game{
     this.startTimer = false;
     this.dir = "";
     this.sec = "";
+    this.dragging = false;
   }
   initWorld(){
     console.log("Initialising Game World");
@@ -18,35 +18,50 @@ class Game{
   }
   update(){
     window.requestAnimationFrame(gameNs.game.update);
-   // if (this.gesture.detection && !this.startTimer){
-    //  this.text = "Touch Detected"
-    //  this.startTimer = true;
+    //if (this.gesture.detection && !this.startTimer) {
+      //this.text = "Touch Detected"
+     // this.startTimer = true;
     //}
 
-    if (this.gesture.doubleDetect && !this.startTimer){
+    if (this.gesture.doubleDetect && !this.startTimer) {
       this.text = "Double Tap Detected"
       this.startTimer = true;
       this.gesture.setDouble(false);
     }
 
-    if (this.gesture.swipe && !this.startTimer){
+    if (this.gesture.swipe && !this.startTimer && !this.dragging && !this.gesture.holding) {
       this.text = " Swipe Detected"
       this.dir = this.gesture.currentDir;
       this.startTimer = true;
       this.gesture.setDouble(false);
     }
-    if (this.gesture.detection)
-    {
-      this.gesture.checkHold();
-      this.startTimer = true;
-      this.text = "Holding for "
-      this.sec = this.gesture.seconds
+
+    if (this.gesture.checkCollision(this.rect)) {
+      this.rect.setPosition(this.gesture.moveX, this.gesture.moveY)
+      this.dragging = true;
+    }
+    else {
+      this.dragging = false;
     }
 
-    if (this.startTimer && !this.gesture.holding){
-     this.timer()
-     
+    if (this.gesture.detection && !this.dragging)
+    {
+      this.gesture.checkHold();   
     }
+
+    if (this.gesture.holding){
+     this.text = "Holding for "
+     this.sec = this.gesture.seconds
+    }
+    else if (!this.gesture.holding && this.text === "Holding for ")
+    {
+      this.startTimer = true;
+    }
+
+    if (this.startTimer){
+      this.timer();
+    }
+
     if (this.secHolder >= 1){
       this.text = "Perform a Gesture";
       this.dir = "";
@@ -75,11 +90,11 @@ class Game{
     var canvas = document.getElementById("mycanvas");
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0,0,canvas.width,canvas.height);
-
+    this.rect.render();
     ctx.font = '120px serif'; 
-    ctx.fillStyle = "000000"
+    ctx.fillStyle = "000000";
     ctx.fillText(this.dir + this.text + this.sec, 50,100);
-    this.rect.render()
+
       
     
   }
