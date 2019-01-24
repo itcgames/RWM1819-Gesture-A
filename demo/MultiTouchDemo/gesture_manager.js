@@ -301,4 +301,17 @@ class GestureManager
  		return collides;
  	}
 
+   touchColl(e)
+ 	{
+ 		var collides = false;
+
+ 		if ((this.startX < e.x + e.width) &&
+ 				(this.startX > e.x) &&
+ 				(this.startY > e.y) &&
+ 				(this.startY < e.y + e.height))
+ 		{
+ 			collides = true;
+ 		}
+ 		return collides;
+ 	}
 }
