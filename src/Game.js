@@ -23,7 +23,7 @@ class Game{
      // this.startTimer = true;
     //}
 
-    if (this.gesture.doubleDetect && !this.startTimer) {
+    if (this.gesture.doubleDetect && !this.startTimer && !this.gesture.swipe) {
       this.text = "Double Tap Detected"
       this.startTimer = true;
       this.gesture.setDouble(false);

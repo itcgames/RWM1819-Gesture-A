@@ -20,6 +20,7 @@ class GestureManager
     this.secHolder = 0;
     this.shapePosX = 0
     this.shapePosY = 0
+    this.touchCount = 0
   }
   /**
    * starts the timer 
@@ -31,7 +32,7 @@ class GestureManager
     document.addEventListener("touchend", this.onTouchEnd.bind(this), {passive:false});
     document.addEventListener("touchmove", this.onTouchMove.bind(this), {passive:false});
   }
-  /**
+ /**
    * check the start touch event when the user 
    * first touches the screen
    * @param {Event}
@@ -53,7 +54,6 @@ class GestureManager
     switch (e.touches.length){
       case 1: this.handle_one_touch(e); break;
       case 2: this.handle_two_touch(e); break;
-      case 3: this.handle_three_touch(e); break;
     }
 
   }
@@ -63,24 +63,25 @@ class GestureManager
   */  
   handle_one_touch(e){
     var touches = e.touches;
-    console.log(touches.length)
+    if (touches.length == 1) {
+
+      this.touchCount = 1;
+    }
+    
   }
+
  /**
   * 
   * @param {Event}
   */  
   handle_two_touch(e){
     var touches = e.touches;
-    console.log(touches.length)
+    if (touches.length == 2) {
+
+      this.touchCount = 2;
+    }
   }
- /**
-  * 
-  * @param {Event}
-  */  
-  handle_three_touch(e){
-    var touches = e.touches;
-    console.log(touches.length)
-  }
+
   /**
    * checks while a touch event is moving on the screen 
    * @param {Event}
@@ -162,7 +163,7 @@ class GestureManager
       this.hold = true
     }
     //checks if hold is true
-    if (this.hold){
+    if (this.hold) {
       //outputs the length of time holding
       console.log("Holding for " + this.secHolder)
     }
@@ -204,6 +205,13 @@ class GestureManager
     */   
    get holding(){
      return this.hold;
+   }
+  /**
+    * 
+    * @return {Boolean}
+    */   
+   get totalTouches() {
+      return this.touchCount;
    }
    /**
     * 
@@ -301,4 +309,16 @@ class GestureManager
  		return collides;
  	}
 
+   touchColl(e)
+ 	{
+
+ 		if ((this.startX < e.x + e.width) &&
+ 				(this.startX > e.x) &&
+ 				(this.startY > e.y) &&
+ 				(this.startY < e.y + e.height))
+ 		{
+ 			collides = true;
+ 		}
+ 		return collides;
+ 	}
 }

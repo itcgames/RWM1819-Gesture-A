@@ -5,6 +5,8 @@ class Rectangle{
     this.y = y;
     this.width = width;
     this.height = height;
+    this.originX = this.x + (this.width / 2)
+    this.originY = this.y + (this.heigth / 2)
     this.text = "Click and Drag me"
 
   }
@@ -23,8 +25,8 @@ class Rectangle{
   }
   setPosition(x, y)
   {
-    this.x = x;
-    this.y = y
+    this.x = x - 150;
+    this.y = y - 150
   }
 
   render()
