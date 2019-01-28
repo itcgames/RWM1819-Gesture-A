@@ -4,36 +4,35 @@ describe('gesture_manager()', function () {
   'use strict';
 
 
-  it('Checks for One Touch detection', function () {
+  it('Checks for general one point detection', function () {
     var gestureManager = new GestureManager(true)
-    expect(gestureManager.getOnePointDetection()).to.equal(false)
+    expect(gestureManager.detection).to.equal(false)
     gestureManager.oneTouch = true
-    expect(gestureManager.getOnePointDetection()).to.equal(true)
+    expect(gestureManager.detection).to.equal(true)
   });
 
-  it('Checks for Double Touch detection', function () {
+  it('Checks for double touch detection', function () {
     var gestureManager = new GestureManager(true)
-    expect(gestureManager.getDoubleTouchDetection()).to.equal(false)
-    gestureManager.doubleTouch = true
-    expect(gestureManager.getDoubleTouchDetection()).to.equal(true)
+    expect(gestureManager.doubleDetect).to.equal(false)
+    gestureManager.setDouble(true)
+    expect(gestureManager.doubleDetect).to.equal(true)
   });
 
-  it('Checks Swipe in Left Direction', function () {
+  it('Checks for a swipe in the left direction', function () {
     var gestureManager = new GestureManager(true)
-    expect(gestureManager.getSwipe()).to.equal(false)
-    gestureManager.swipeDetected = true
-    gestureManager.direction = "left"
-    expect(gestureManager.getSwipe()).to.equal(true)
-    expect(gestureManager.getDirection()).to.equal("left")
+    expect(gestureManager.swipe).to.equal(false)
+    gestureManager.setSwipe("Left",true);
+    expect(gestureManager.swipe).to.equal(true)
+    expect(gestureManager.currentDir).to.equal("Left")
   });
 
   it('Checks if user is holding screen', function (){
     var gestureManager = new GestureManager(true)
-    expect(gestureManager.getHolding()).to.equal(false)
+    expect(gestureManager.holding).to.equal(false)
     gestureManager.hold = true
     gestureManager.secHolder = 1
-    expect(gestureManager.getHolding()).to.equal(true)
-    expect(gestureManager.getSeconds()).to.equal(1)
+    expect(gestureManager.holding).to.equal(true)
+    expect(gestureManager.seconds).to.equal(1)
   });
 
   it('Checks if user is dragging item', function (){
@@ -43,6 +42,16 @@ describe('gesture_manager()', function () {
     gestureManager.shapePosX = 100;
     gestureManager.shapePosY = 100;
     expect(gestureManager.checkCollision(rect)).to.equal(true);
+
+  });
+
+  it('Checks if there are two touch points on the screen', function (){
+    var gestureManager = new GestureManager(true)
+    gestureManager.touchCount = 1;
+    expect(gestureManager.multi).to.equal(false);
+    gestureManager.touchCount = 2;
+    gestureManager.multiDetection = true;
+    expect(gestureManager.multi).to.equal(true);
 
   });
 

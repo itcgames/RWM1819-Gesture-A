@@ -1,14 +1,12 @@
 class Game{
   constructor(){
     this.gesture = new GestureManager();
-    this.rect = new Rectangle(400,700,300,300)
-    this.text = "Perform a Gesture"
-   
+    this.text = "Perform a swipe"
+    this.last = "None";
     this.secondCount = 0;
     this.secHolder = 0;
     this.startTimer = false;
     this.dir = "";
-    this.sec = "";
     this.dragging = false;
   }
   initWorld(){
@@ -18,43 +16,11 @@ class Game{
   }
   update(){
     window.requestAnimationFrame(gameNs.game.update);
-    //if (this.gesture.detection && !this.startTimer) {
-      //this.text = "Touch Detected"
-     // this.startTimer = true;
-    //}
 
-    if (this.gesture.doubleDetect && !this.startTimer && !this.gesture.swipe) {
-      this.text = "Double Tap Detected"
-      this.startTimer = true;
-      this.gesture.setDouble(false);
-    }
-
-    if (this.gesture.swipe && !this.startTimer && !this.dragging && !this.gesture.holding) {
+    if (this.gesture.swipe && !this.startTimer) {
       this.text = " Swipe Detected"
       this.dir = this.gesture.currentDir;
-      this.startTimer = true;
-      this.gesture.setDouble(false);
-    }
-
-    if (this.gesture.checkCollision(this.rect)) {
-      this.rect.setPosition(this.gesture.moveX, this.gesture.moveY)
-      this.dragging = true;
-    }
-    else {
-      this.dragging = false;
-    }
-
-    if (this.gesture.detection && !this.dragging)
-    {
-      this.gesture.checkHold();   
-    }
-
-    if (this.gesture.holding){
-     this.text = "Holding for "
-     this.sec = this.gesture.seconds
-    }
-    else if (!this.gesture.holding && this.text === "Holding for ")
-    {
+      this.last = this.dir
       this.startTimer = true;
     }
 
@@ -63,9 +29,8 @@ class Game{
     }
 
     if (this.secHolder >= 1){
-      this.text = "Perform a Gesture";
+      this.text = "Perform a swipe"
       this.dir = "";
-      this.sec = ""
       this.secHolder = 0;
       this.secondCount = 0;
       this.startTimer = false;
@@ -90,10 +55,11 @@ class Game{
     var canvas = document.getElementById("mycanvas");
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    this.rect.render();
-    ctx.font = '120px serif'; 
+    ctx.font = '100px serif'; 
     ctx.fillStyle = "000000";
-    ctx.fillText(this.dir + this.text + this.sec, 50,100);
+    ctx.fillText(this.dir + this.text, 50,100);
+    ctx.font = '60px serif'; 
+    ctx.fillText("Last Swipe = "  + this.last, 50,200);
 
       
     

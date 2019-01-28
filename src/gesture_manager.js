@@ -15,6 +15,7 @@ class GestureManager
     this.doubleTouch = false;
     this.oneTouch = false;
     this.swipeDetected = false;
+    this.multiDetection = false;
     this.direction = null;
     this.secondCount = 0;
     this.secHolder = 0;
@@ -78,6 +79,7 @@ class GestureManager
     var touches = e.touches;
     if (touches.length == 2) {
 
+      this.multiDetection = true;
       this.touchCount = 2;
     }
   }
@@ -146,6 +148,9 @@ class GestureManager
     this.setHolding(0,false);
     //resets the swipe to none
     this.setSwipe("none", false);
+
+    //resets multiTouch
+    this.multiDetection = false;
   }
  /**
   * 
@@ -208,11 +213,20 @@ class GestureManager
    }
   /**
     * 
-    * @return {Boolean}
+    * @return {*}
     */   
    get totalTouches() {
       return this.touchCount;
    }
+
+   /**
+    * 
+    * @return {*}
+    */   
+   get multi() {
+    return this.multiDetection;
+   }
+
    /**
     * 
     * @return {Boolean}
@@ -308,14 +322,22 @@ class GestureManager
  		}
  		return collides;
  	}
-
-   touchColl(e)
+/**
+  * Check collision between position points being passed
+  * returns collision 
+  * @param {*} x
+  * @param {*} y
+  * @param {*} width
+  * @param {*} height
+  * @return {Boolean}
+  */
+   touchColl(x,y,width,height)
  	{
 
- 		if ((this.startX < e.x + e.width) &&
- 				(this.startX > e.x) &&
- 				(this.startY > e.y) &&
- 				(this.startY < e.y + e.height))
+ 		if ((this.startX < x + width) &&
+ 				(this.startX > x) &&
+ 				(this.startY > y) &&
+ 				(this.startY < y + height))
  		{
  			collides = true;
  		}
